@@ -54,7 +54,7 @@ export default {
 
   generate: {
     async routes(callback) {
-      var secretKey = privateKey.replace(/\\n/gm, '\n')
+      var secretKey = process.env.PRIVATE_KEY.replace(/\\n/gm, '\n')
 
       const token = jwt.sign(
           { "iss": "samplewiki@musictart.iam.gserviceaccount.com", "scope": "https://www.googleapis.com/auth/spreadsheets", "aud": "https://oauth2.googleapis.com/token" },
