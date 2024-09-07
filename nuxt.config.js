@@ -47,5 +47,5 @@ export default {
   publicRuntimeConfig: {
     privateKey: process.env.PRIVATE_KEY,
     sheetId: process.env.SPREADSHEET,
-  }
+  },
 }

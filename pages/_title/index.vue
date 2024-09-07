@@ -43,7 +43,6 @@ export default {
         var sheetData = await fetch(googleSheetUrl, googleSheetParam)
         var sheetRes = await sheetData.json()
         var wikiBody = sheetRes.values[sheetRes.values.length - 1][2]
-        var wikiBody = sheetRes.values[sheetRes.values.length - 1][2]
         var wikiBody1 = wikiBody.replace(/\\n/gm, '\n')
         var wikiBody1 = wikiBody1.replace(/\[(.+)\]\(([^\:].+)\)/gm, `[$1](../$2)`)
         var wikiBody1 = wikiBody1.replace(/\[(.+)\]\(\)/gm, `[$1](/$1)`)
