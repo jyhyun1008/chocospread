@@ -70,12 +70,12 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
         env:
-          NUXT_ENV_API_URL: ${{ secrets.PRIVATE_KEY }}  # 환경 변수를 여기에 추가
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}  # 환경 변수를 여기에 추가
 
       - name: Static HTML export with Nuxt
         run: ${{ steps.detect-package-manager.outputs.manager }} run generate
         env:
-          NUXT_ENV_API_URL: ${{ secrets.PRIVATE_KEY }}  # 이 단계에서도 필요하다면 추가
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}  # 이 단계에서도 필요하다면 추가
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
