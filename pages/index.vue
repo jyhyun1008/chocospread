@@ -109,7 +109,7 @@ export default {
         var wikiListArray = sheetRes3.sheets
         var wikiList = ''
         for (let i=0; i<wikiListArray.length; i++) {
-            wikiList += '['+wikiListArray[i].properties.title+']('+wikiListArray[i].properties.title.replace(/\//gm, '%2F')+')'
+            wikiList += '['+wikiListArray[i].properties.title+'](./'+wikiListArray[i].properties.title.replace(/\//gm, '%2F')+')'
         }
 
         // var wikiBody1 = wikiBody.replace(/\\n/gm, '\n')
