@@ -18,7 +18,7 @@
                 </div>
                 <div id="footer">
                     <!--Add buttons to initiate auth sequence and sign out-->
-                    <button id="edit_button" onclick="handleEditClick()" style="display: none;">편집</button> <button id="history_button" onclick="handleHistoryClick()" style="display: none;">역사</button>
+                    <button id="edit_button" onclick="handleEditClick()" style="display: none;">편집</button> <button id="history_button" onclick="handleHistoryClick()">역사</button>
                 </div>
             </div>
         </div>
@@ -32,20 +32,20 @@ const querystring = require("querystring");
 
 export default {
     head () {
-    return {
-      script: [
-        { src: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js', defer: true },
-        // { src: 'https://apis.google.com/js/api.js'},
-        // { src: 'https://accounts.google.com/gsi/client'},
-        // { src: '../js/settings.js', defer: true },
-        { src: '../js/index.js', defer: true },
-      ],
-      link: [
-        { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
-        { href: '../css/main.css', rel: 'stylesheet'}
-      ]
-    }
-  },
+        return {
+            script: [
+                { src: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js', defer: true },
+                // { src: 'https://apis.google.com/js/api.js'},
+                // { src: 'https://accounts.google.com/gsi/client'},
+                // { src: '../js/settings.js', defer: true },
+                { src: '../js/index.js', defer: true },
+            ],
+            link: [
+                { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
+                { href: '../css/main.css', rel: 'stylesheet'}
+            ]
+        }
+    },
     async asyncData ({ params , $config: { privateKey }}) {
 
         var wikiTitle = '샘플 위키'
@@ -85,21 +85,26 @@ export default {
         }
         var sheetData = await fetch(googleSheetUrl, googleSheetParam)
         var sheetRes = await sheetData.json()
-        var wikiBody = sheetRes.values[sheetRes.values.length - 1][2]
-        if (wikiBody.includes('![') && wikiBody.includes(']()')) {
-            let includeArray = wikiBody.split('![').slice(1)
-            for await (let including of includeArray) {
-                var including2 = including.split(']()')[0]
-                try {
-                    const googleSheetUrl2 = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${including2}!A:C`
-                    var sheetData2 = await fetch(googleSheetUrl2, googleSheetParam)
-                    var sheetRes2 = await sheetData2.json()
-                    var content = sheetRes2.values[sheetRes2.values.length - 1][2]
-                    wikiBody = wikiBody.replace('!['+including2+']()', content)
-                } catch (err) {
-                    // console.log(err)
+        var wikiBody = sheetRes.values
+        
+        for (let j=0; j<wikiBody.length; j++) {
+
+            if (wikiBody[j][2].includes('![') && wikiBody[j][2].includes(']()')) {
+                let includeArray = wikiBody[j][2].split('![').slice(1)
+                for await (let including of includeArray) {
+                    var including2 = including.split(']()')[0]
+                    try {
+                        const googleSheetUrl2 = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${including2}!A:C`
+                        var sheetData2 = await fetch(googleSheetUrl2, googleSheetParam)
+                        var sheetRes2 = await sheetData2.json()
+                        var content = sheetRes2.values[sheetRes2.values.length - 1][2]
+                        wikiBody[j][2] = wikiBody[j][2].replace('!['+including2+']()', '!['+including2+']()<'+content+'>')
+                    } catch (err) {
+                        //console.log(err)
+                    }
                 }
             }
+
         }
 
         // var wikiBody1 = wikiBody.replace(/\\n/gm, '\n')

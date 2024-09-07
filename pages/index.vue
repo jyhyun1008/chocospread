@@ -15,11 +15,11 @@
                 <div id="content-box">
                     <div id="content"></div>
                     <div id="content-hide" style="display: none;">{{ wikiBody }}</div>
-                    <div id="list-hide" style="display: none;" v-html="$md.render(wikiList)"></div>
+                    
                 </div>
                 <div id="footer">
                     <!--Add buttons to initiate auth sequence and sign out-->
-                    <button id="edit_button" onclick="handleEditClick()" style="display: none;">편집</button> <button id="history_button" onclick="handleHistoryClick()" style="display: none;">역사</button>
+                    <button id="edit_button" onclick="handleEditClick()" style="display: none;">편집</button> <button id="history_button" onclick="handleHistoryClick()">역사</button>
                 </div>
             </div>
         </div>
@@ -85,37 +85,32 @@ export default {
         }
         var sheetData = await fetch(googleSheetUrl, googleSheetParam)
         var sheetRes = await sheetData.json()
-        var wikiBody = sheetRes.values[sheetRes.values.length - 1][2]
+        var wikiBody = sheetRes.values
+        
+        for (let j=0; j<wikiBody.length; j++) {
 
-        if (wikiBody.includes('![') && wikiBody.includes(']()')) {
-            let includeArray = wikiBody.split('![').slice(1)
-            for await (let including of includeArray) {
-                var including2 = including.split(']()')[0]
-                try {
-                    const googleSheetUrl2 = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${including2}!A:C`
-                    var sheetData2 = await fetch(googleSheetUrl2, googleSheetParam)
-                    var sheetRes2 = await sheetData2.json()
-                    var content = sheetRes2.values[sheetRes2.values.length - 1][2]
-                    wikiBody = wikiBody.replace('!['+including2+']()', content)
-                } catch (err) {
-                    //console.log(err)
+            if (wikiBody[j][2].includes('![') && wikiBody[j][2].includes(']()')) {
+                let includeArray = wikiBody[j][2].split('![').slice(1)
+                for await (let including of includeArray) {
+                    var including2 = including.split(']()')[0]
+                    try {
+                        const googleSheetUrl2 = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${including2}!A:C`
+                        var sheetData2 = await fetch(googleSheetUrl2, googleSheetParam)
+                        var sheetRes2 = await sheetData2.json()
+                        var content = sheetRes2.values[sheetRes2.values.length - 1][2]
+                        wikiBody[j][2] = wikiBody[j][2].replace('!['+including2+']()', '!['+including2+']()<'+content+'>')
+                    } catch (err) {
+                        //console.log(err)
+                    }
                 }
             }
-        }
 
-        const googleSheetUrl3 = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/`
-        var sheetData3 = await fetch(googleSheetUrl3, googleSheetParam)
-        var sheetRes3 = await sheetData3.json()
-        var wikiListArray = sheetRes3.sheets
-        var wikiList = ''
-        for (let i=0; i<wikiListArray.length; i++) {
-            wikiList += '['+wikiListArray[i].properties.title+'](./'+wikiListArray[i].properties.title.replace(/\//gm, '%2F')+')'
         }
 
         // var wikiBody1 = wikiBody.replace(/\\n/gm, '\n')
         // var wikiBody1 = wikiBody1.replace(/\[(.+)\]\(([^\:].+)\)/gm, `[$1](/$2)`)
         // var wikiBody1 = wikiBody1.replace(/\[(.+)\]\(\)/gm, `[$1](/$1)`)
-        return { wikiTitle, rawTitle, wikiBody, wikiList }
+        return { wikiTitle, rawTitle, wikiBody }
     }
 }
 </script>
