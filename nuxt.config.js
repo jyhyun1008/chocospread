@@ -90,7 +90,7 @@ export default {
       var wikiListArray = sheetRes3.sheets
       var wikiList = []
       for (let i=0; i<wikiListArray.length; i++) {
-          wikiList.push('/'+wikiListArray[i].properties.title.replace(/\//gm, '%2F'))
+          wikiList.push('/'+encodeURIComponent(wikiListArray[i].properties.title))
       }
 
       const routes = wikiList
