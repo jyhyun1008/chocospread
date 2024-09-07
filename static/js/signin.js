@@ -19,7 +19,16 @@ localStorage.setItem('googleToken', code)
 //async function handleCredentialResponse(response) {
     //console.log("Encoded JWT ID token: " + response.credential);
 
-    const url = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=https%3A%2F%2Fwiki.rongo.moe%2Flogin&client_id=876385603351-6dho403hu41litd5us9bedkjed165g4f.apps.googleusercontent.com'
+    const userInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo"
+    const userInfoParam = {
+        method: 'GET',
+        headers: {
+            Authorization: "Bearer " + code,
+        },
+    }
+    var userData = await fetch(userInfoUrl, userInfoParam)
+    var userRes = await userData.json()
+    console.log(userRes)
 //     const googleAuthUrl = 'https://oauth2.googleapis.com/token'
 //     const googleAuthParam = {
 //             method: 'POST',
