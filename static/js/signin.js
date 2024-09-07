@@ -18,7 +18,7 @@ var code = qs.code
 localStorage.setItem('googleToken', code)
 //async function handleCredentialResponse(response) {
     //console.log("Encoded JWT ID token: " + response.credential);
-
+async function getUserInfo() {
     const userInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo"
     const userInfoParam = {
         method: 'GET',
@@ -29,6 +29,7 @@ localStorage.setItem('googleToken', code)
     var userData = await fetch(userInfoUrl, userInfoParam)
     var userRes = await userData.json()
     console.log(userRes)
+}
 //     const googleAuthUrl = 'https://oauth2.googleapis.com/token'
 //     const googleAuthParam = {
 //             method: 'POST',
