@@ -8,7 +8,7 @@ async function handleCredentialResponse(response) {
             headers: {
                 'content-type': "application/x-www-form-urlencoded",
             },
-            body: queryString.stringify({
+            body: stringify({
                 grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
                 assertion: response.credential
             })
