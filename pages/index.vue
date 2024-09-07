@@ -15,7 +15,7 @@
                 <div id="content-box">
                     <div id="content"></div>
                     <div id="content-hide" style="display: none;">{{ wikiBody }}</div>
-                    <div id="list-hide" style="display: none;">{{ $md.render(wikiList) }}</div>
+                    <div id="list-hide" style="display: none;" v-html="$md.render(wikiList)"></div>
                 </div>
                 <div id="footer">
                     <!--Add buttons to initiate auth sequence and sign out-->
