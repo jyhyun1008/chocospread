@@ -1,35 +1,104 @@
-function getQueryStringObject() {
-    var a = window.location.search.substr(1).split('&');
-    if (a == "") return {};
-    var b = {};
-    for (var i = 0; i < a.length; ++i) {
-        var p = a[i].split('=', 2);
-        if (p.length == 1)
-            b[p[0]] = "";
-        else
-            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
-    }
-    return b;
+
+function gapiLoaded() {
+    gapi.load('client', initializeGapiClient);
 }
 
-var qs = getQueryStringObject()
-var code = qs.code
+async function initializeGapiClient() {
+    // TODO(developer): Set to client ID and API key from the Developer Console
+    const API_KEY = document.querySelector('#footer').className.split('AIzaSy')[1];
+    var API_KEY_conf = ''
 
-localStorage.setItem('googleToken', code)
-//async function handleCredentialResponse(response) {
-    //console.log("Encoded JWT ID token: " + response.credential);
-async function getUserInfo() {
-    const userInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo"
-    const userInfoParam = {
-        method: 'GET',
-        headers: {
-            Authorization: "Bearer " + code,
-        },
+    for (let i=0;i< API_KEY.length;i++) {
+        try {
+            var confirmAPI = await fetch('/API_KEY/AIzaSy'+API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i))
+            var confirmData = await confirmAPI.text()
+            if (confirmData.split('<div>')[1].split('</div>')[0] === 'true') {
+                API_KEY_conf = 'AIzaSy' + API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i)
+            }
+        } catch (err) {
+        }
     }
-    var userData = await fetch(userInfoUrl, userInfoParam)
-    var userRes = await userData.json()
-    console.log(userRes)
+
+    await gapi.client.init({
+        apiKey: API_KEY_conf,
+        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+    });
+
+    gapiInited = true;
+
+    //maybeEnableButtons();
+    renderContent(title)
 }
+
+gapiLoaded()
+
+function handleAuthClick() {
+
+    tokenClient.callback = async (resp) => {
+        if (resp.error !== undefined) {
+            throw (resp);
+        }
+        var token = JSON.stringify(gapi.client.getToken())
+        var tokenExpireDate = new Date()
+        tokenExpireDate.setHours(tokenExpireDate.getHours() + 1);
+        localStorage.setItem('googleToken', token)
+        localStorage.setItem('tokenExpireDate', tokenExpireDate)
+
+        await renderContent(title);
+    };
+
+    if ( gapi.client.getToken() === null) {
+        // Prompt the user to select a Google Account and ask for consent to share their data
+        // when establishing a new session.
+        tokenClient.requestAccessToken({prompt: 'consent'});
+        var token = JSON.stringify(gapi.client.getToken())
+        var tokenExpireDate = new Date()
+        tokenExpireDate.setHours(tokenExpireDate.getHours() + 1);
+        localStorage.setItem('googleToken', token)
+        localStorage.setItem('tokenExpireDate', tokenExpireDate)
+    } else {
+        // Skip display of account chooser and consent dialog for an existing session.
+        tokenClient.requestAccessToken({prompt: ''});
+    }
+    
+}
+
+handleAuthClick()
+
+// function getQueryStringObject() {
+//     var a = window.location.search.substr(1).split('&');
+//     if (a == "") return {};
+//     var b = {};
+//     for (var i = 0; i < a.length; ++i) {
+//         var p = a[i].split('=', 2);
+//         if (p.length == 1)
+//             b[p[0]] = "";
+//         else
+//             b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+//     }
+//     return b;
+// }
+
+// var qs = getQueryStringObject()
+// var code = qs.code
+
+// localStorage.setItem('googleToken', code)
+// //async function handleCredentialResponse(response) {
+//     //console.log("Encoded JWT ID token: " + response.credential);
+// async function getUserInfo() {
+//     const userInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo"
+//     const userInfoParam = {
+//         method: 'GET',
+//         headers: {
+//             Authorization: "Bearer " + code,
+//         },
+//     }
+//     var userData = await fetch(userInfoUrl, userInfoParam)
+//     var userRes = await userData.json()
+//     console.log(userRes)
+// }
+
+// getUserInfo()
 //     const googleAuthUrl = 'https://oauth2.googleapis.com/token'
 //     const googleAuthParam = {
 //             method: 'POST',

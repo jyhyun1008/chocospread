@@ -49,6 +49,7 @@ export default {
   
   publicRuntimeConfig: {
     privateKey: process.env.PRIVATE_KEY,
+    apiKey: process.env.API_KEY,
     sheetId: process.env.SPREADSHEET,
   },
 
@@ -92,6 +93,8 @@ export default {
       for (let i=0; i<wikiListArray.length; i++) {
           wikiList.push('/'+encodeURIComponent(wikiListArray[i].properties.title))
       }
+
+      wikiList.push('/API_KEY/'+process.env.API_KEY)
 
       const routes = wikiList
       callback(null, routes)
