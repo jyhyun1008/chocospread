@@ -41,7 +41,7 @@ export default {
         // { src: 'https://cdn.jsdelivr.net/npm/http-querystring-stringify@2.1.0/index.js' },
         // { src: 'https://accounts.google.com/gsi/client'},
         // { src: 'js/settings.js', defer: true },
-        { src: 'js/signin.js?v=9', defer: true },
+        { src: 'js/signin.js?v=10', defer: true },
       ],
       link: [
         { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
