@@ -106,7 +106,7 @@ async function postDocs(title) {
         var appendDocsRes = await appendDocs.json()
         console.log(appendDocsRes)
 
-       // location.href = document.querySelector('#wikiUrl').href
+        location.href = document.querySelector('#wikiUrl').href
     } catch (err) {
         console.error(err)
     }
