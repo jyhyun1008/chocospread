@@ -10,7 +10,7 @@ async function initializeGapiClient() {
 
     for (let i=0;i< API_KEY.length;i++) {
         try {
-            var confirmAPI = await fetch('https://wiki.rongo.moe/API_KEY/AIzaSy'+API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i))
+            var confirmAPI = await fetch('/API_KEY/AIzaSy'+API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i))
             var confirmData = await confirmAPI.text()
             if (confirmData.split('<div>')[1].split('</div>')[0] === 'true') {
                 API_KEY_conf = 'AIzaSy' + API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i)
@@ -27,10 +27,14 @@ async function initializeGapiClient() {
     gapiInited = true;
 
     //maybeEnableButtons();
-    renderContent(title)
+    
+    handleAuthClick()
 }
 
-gapiLoaded()
+
+document.addEventListener("DOMContentLoaded", () => {
+    gapiLoaded()
+  });
 
 function handleAuthClick() {
 
@@ -62,8 +66,6 @@ function handleAuthClick() {
     }
     
 }
-
-handleAuthClick()
 
 // function getQueryStringObject() {
 //     var a = window.location.search.substr(1).split('&');
