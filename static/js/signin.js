@@ -1,3 +1,6 @@
+let tokenClient;
+let gapiInited = false;
+let gisInited = false;
 
 function gapiLoaded() {
     gapi.load('client', initializeGapiClient);
@@ -9,35 +12,36 @@ async function initializeGapiClient() {
     const API_KEY = document.querySelector('#footer').className.split('AIzaSy')[1];
     var API_KEY_conf = ''
 
-    setTimeout(async () => {
-
-        for (let i=0;i< API_KEY.length;i++) {
-            try {
-                var confirmAPI = await fetch('https://wiki.rongo.moe/API_KEY/AIzaSy'+API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i))
-                console.log(confirmAPI.status)
-                // var confirmData = await confirmAPI.text()
-                // if (confirmData.split('<div>')[1].split('</div>')[0] === 'true') {
-                //     
-                // }
-            } catch (err) {
-                console.log(err)
+    for (let i=0;i< API_KEY.length;i++) {
+        try {
+            var confirmAPI = await fetch('https://wiki.rongo.moe/API_KEY/AIzaSy'+API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i))
+            console.log(confirmAPI.status)
+            if (confirmAPI.status == '404') {
+                throw Error('404');
+            }
+            // var confirmData = await confirmAPI.text()
+            // if (confirmData.split('<div>')[1].split('</div>')[0] === 'true') {
+            //     
+            // }
+        } catch (err) {
+            if (err != '404') {
                 API_KEY_conf = 'AIzaSy' + API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i)
             }
         }
+    }
 
-        console.log(API_KEY_conf)
+    console.log(API_KEY_conf)
+
+    await gapi.client.init({
+        apiKey: API_KEY_conf,
+        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+    });
+
+    gapiInited = true;
+
+    //maybeEnableButtons();
     
-        await gapi.client.init({
-            apiKey: API_KEY_conf,
-            discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-        });
-    
-        gapiInited = true;
-    
-        //maybeEnableButtons();
-        
-        handleAuthClick()
-    }, 1000)
+    handleAuthClick()
 
 }
 
