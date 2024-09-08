@@ -47,7 +47,7 @@ export default {
   build: {
   },
   
-  publicRuntimeConfig: {
+  privateRuntimeConfig: {
     wikiTitle: process.env.WIKI_TITLE,
     frontPage: process.env.FRONT_PAGE,
     wikiUrl: process.env.WIKI_URL,
