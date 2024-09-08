@@ -27,7 +27,6 @@ if (localStorage.getItem('googleToken')) {
     googleToken = localStorage.getItem('googleToken')
     googleEmail = localStorage.getItem('googleEmail')
     expireDate = Date.parse(localStorage.getItem('tokenExpireDate'))
-    document.querySelector('#edit_button').style = "display: inline;"
     document.querySelector('#isLogin').innerHTML = '<i class="bx bx-user-voice" onclick="handleSignoutClick()" ></i>'
     if (expireDate < new Date()){
         localStorage.removeItem('googleToken')
@@ -36,7 +35,6 @@ if (localStorage.getItem('googleToken')) {
         googleToken = ''
         googleEmail = ''
         expireDate = new Date()
-        document.querySelector('#edit_button').style = "display: none;"
         document.querySelector('#isLogin').innerHTML = '<i class="bx bx-user-x" onclick="handleAuthClick()" ></i>'
         document.querySelector('#content').innerText = '문서 생성 권한이 없습니다. 오른쪽 위의 로그인 버튼을 눌러 로그인해 주세요.'
     } else {
@@ -52,7 +50,7 @@ if (localStorage.getItem('googleToken')) {
 
 async function postDocs(title) {
     var postDocsUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchUpdate`
-    const body = {
+    const body = JSON.stringify({
         "requests":{
             "addSheet":{
                 "properties":{
@@ -60,7 +58,7 @@ async function postDocs(title) {
                 }
             }
         }
-    }
+    })
     var postDocsParam = {
         method: 'POST',
         headers: {

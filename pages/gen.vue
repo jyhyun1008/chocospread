@@ -32,8 +32,7 @@ export default {
         {content: "upgrade-insecure-requests"}
         ],
       script: [
-        { src: 'https://cdn.jsdelivr.net/npm/http-querystring-stringify@2.1.0/index.js' },
-        { src: 'js/gen.js', defer: true },
+        { src: 'js/gen.js?v=0', defer: true },
       ],
       link: [
         { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
