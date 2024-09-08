@@ -78,7 +78,7 @@ function handleAuthClick() {
     var wikiUrl = encodeURIComponent(document.querySelector('#wikiUrl').href)
     var clientId = document.querySelector('#cid').className
 
-    location.href=`https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=${wikiUrl}signin%2F&client_id=${clientId}`
+    location.href=`https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets&access_type=offline&include_granted_scopes=true&response_type=token&state=state_parameter_passthrough_value&redirect_uri=${wikiUrl}signin%2F&client_id=${clientId}`
 }
 
 function simpleParse(text) {
