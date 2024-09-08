@@ -93,11 +93,8 @@ export default {
       for (let i=0; i<wikiListArray.length; i++) {
           wikiList.push('/'+encodeURIComponent(wikiListArray[i].properties.title))
       }
-      var API_KEY = process.env.API_KEY.split('AIzaSy')[1];
-  
-      for (let i=0;i< API_KEY.length;i++) {
-          wikiList.push('/API_KEY/AIzaSy'+API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i))
-      }
+      var API_KEY = process.env.API_KEY
+      wikiList.push('/API_KEY/'+API_KEY)
 
       const routes = wikiList
       callback(null, routes)
