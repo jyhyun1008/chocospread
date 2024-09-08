@@ -4,31 +4,36 @@ function gapiLoaded() {
 }
 
 async function initializeGapiClient() {
+
     // TODO(developer): Set to client ID and API key from the Developer Console
     const API_KEY = document.querySelector('#footer').className.split('AIzaSy')[1];
     var API_KEY_conf = ''
 
-    for (let i=0;i< API_KEY.length;i++) {
-        try {
-            var confirmAPI = await fetch('https://wiki.rongo.moe/API_KEY/AIzaSy'+API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i))
-            var confirmData = await confirmAPI.text()
-            if (confirmData.split('<div>')[1].split('</div>')[0] === 'true') {
-                API_KEY_conf = 'AIzaSy' + API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i)
+    setTimeout(async () => {
+
+        for (let i=0;i< API_KEY.length;i++) {
+            try {
+                var confirmAPI = await fetch('https://wiki.rongo.moe/API_KEY/AIzaSy'+API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i))
+                var confirmData = await confirmAPI.text()
+                if (confirmData.split('<div>')[1].split('</div>')[0] === 'true') {
+                    API_KEY_conf = 'AIzaSy' + API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i)
+                }
+            } catch (err) {
             }
-        } catch (err) {
         }
-    }
-
-    await gapi.client.init({
-        apiKey: API_KEY_conf,
-        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-    });
-
-    gapiInited = true;
-
-    //maybeEnableButtons();
     
-    handleAuthClick()
+        await gapi.client.init({
+            apiKey: API_KEY_conf,
+            discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+        });
+    
+        gapiInited = true;
+    
+        //maybeEnableButtons();
+        
+        handleAuthClick()
+    }, 1000)
+
 }
 
 
