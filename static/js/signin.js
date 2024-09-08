@@ -27,7 +27,7 @@ async function getAccess(){
         },
         body: stringify({
             code: code,
-            client_id: '876385603351-jv2v0054q5ho1lc8rg216pkucqsdqnug.apps.googleusercontent.com',
+            client_id: '876385603351-6dho403hu41litd5us9bedkjed165g4f.apps.googleusercontent.com',
             client_secret: document.querySelector('#footer').className,
             redirect_uri: location.origin+'/signin/',
             grant_type: 'authorization_code'
