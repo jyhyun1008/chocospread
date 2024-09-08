@@ -27,9 +27,9 @@ async function getAccess(){
         },
         body: stringify({
             code: code,
-            client_id: '876385603351-6dho403hu41litd5us9bedkjed165g4f.apps.googleusercontent.com',
-            client_secret: document.querySelector('#footer').className,
-            redirect_uri: location.origin+'/signin/',
+            client_id: document.querySelector('#cid').className,
+            client_secret: document.querySelector('#sc').className,
+            redirect_uri: document.querySelector('#wikiUrl').href+'signin/',
             grant_type: 'authorization_code'
         })
     }
@@ -52,53 +52,7 @@ async function getAccess(){
     var userRes = await userData.json()
     localStorage.setItem('googleEmail', userRes.email)
 
-    location.href="./"
+    location.href = document.querySelector('#wikiUrl').href
 }
 
 getAccess()
-
-//async function handleCredentialResponse(response) {
-    //console.log("Encoded JWT ID token: " + response.credential);
-// async function getUserInfo() {
-//     const userInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo"
-//     const userInfoParam = {
-//         method: 'GET',
-//         headers: {
-//             Authorization: "Bearer " + code,
-//         },
-//     }
-//     var userData = await fetch(userInfoUrl, userInfoParam)
-//     var userRes = await userData.json()
-//     console.log(userRes)
-// }
-
-// getUserInfo()
-
-//     const googleAuthUrl = 'https://oauth2.googleapis.com/token'
-//     const googleAuthParam = {
-//             method: 'POST',
-//             headers: {
-//                 'content-type': "application/x-www-form-urlencoded",
-//             },
-//             body: stringify({
-//                 grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-//                 assertion: response.credential
-//             })
-//         }
-
-//     var authData = await fetch(googleAuthUrl, googleAuthParam)
-//     var authRes = await authData.json()
-
-//     console.log(authRes.access_token)
-//   }
-//   window.onload = function () {
-//     google.accounts.id.initialize({
-//       client_id: "876385603351-6dho403hu41litd5us9bedkjed165g4f.apps.googleusercontent.com",
-//       callback: handleCredentialResponse
-//     });
-//     google.accounts.id.renderButton(
-//       document.getElementById("buttonDiv"),
-//       { theme: "outline", size: "large" }  // customization attributes
-//     );
-//     google.accounts.id.prompt(); // also display the One Tap dialog
-//   }

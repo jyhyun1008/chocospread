@@ -48,7 +48,13 @@ export default {
   },
   
   publicRuntimeConfig: {
+    wikiTitle: process.env.WIKI_TITLE,
+    frontPage: process.env.FRONT_PAGE,
+    wikiUrl: process.env.WIKI_URL,
+    privateKeyId: process.env.PRIVATE_KEY_ID,
     privateKey: process.env.PRIVATE_KEY,
+    clientEmail: process.env.CLIENT_EMAIL,
+    clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     sheetId: process.env.SPREADSHEET,
   },

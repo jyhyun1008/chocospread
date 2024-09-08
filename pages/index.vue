@@ -2,7 +2,7 @@
     <div id="app">
         <div id="wrapper">
             <div id="navbar">
-                <a href="./"><div id="logo">{{ wikiTitle }}</div></a>
+                <a id="wikiUrl" :href="wikiUrl"><div id="logo">{{ wikiTitle }}</div></a>
                 <div id="member-info">
                     <div id="search"><input id="search-input"> <a id="search-button"><i class='bx bx-search'></i></a></div>
                     <div id="status"><span id="isLogin"><i class="bx bx-user-x" onclick="handleAuthClick()" ></i></span></div>
@@ -14,11 +14,13 @@
                 </div>
                 <div id="content-box">
                     <div id="content"></div>
+                    <div id="sheetId" :class="sheetId"></div>
                     <div id="content-hide" style="display: none;">{{ wikiBody }}</div>
                 </div>
                 <div id="footer">
                     <!--Add buttons to initiate auth sequence and sign out-->
                     <button id="edit_button" onclick="handleEditClick()" style="display: none;">편집</button> <button id="history_button" onclick="handleHistoryClick()">역사</button>
+                    <div id="cid" :class="clientId"></div>
                 </div>
             </div>
         </div>
@@ -43,17 +45,16 @@ export default {
             ]
         }
     },
-    async asyncData ({$config: { privateKey }}) {
+    async asyncData ({$config: { privateKey }, $config: { wikiTitle }, $config: { frontPage }, $config: { privateKeyId }, $config: { clientEmail }, $config: { sheetId }, $config: { clientId }, $config: { wikiUrl }}) {
 
-        var wikiTitle = '샘플 위키'
-        var rawTitle = '대문'
-
+        var rawTitle = frontPage
         var secretKey = privateKey.replace(/\\n/gm, '\n')
+        wikiUrl = 'https://'+wikiUrl
 
         const token = jwt.sign(
-            { "iss": "samplewiki@musictart.iam.gserviceaccount.com", "scope": "https://www.googleapis.com/auth/spreadsheets", "aud": "https://oauth2.googleapis.com/token" },
+            { "iss": clientEmail, "scope": "https://www.googleapis.com/auth/spreadsheets", "aud": "https://oauth2.googleapis.com/token" },
             secretKey,
-            { algorithm: 'RS256', expiresIn: "1h", keyid: "b7c157e4d406c1d29acc1783b7a36fea02ee5579" }
+            { algorithm: 'RS256', expiresIn: "1h", keyid: privateKeyId }
         );
 
         const googleAuthUrl = 'https://oauth2.googleapis.com/token'
@@ -71,7 +72,7 @@ export default {
         var authData = await fetch(googleAuthUrl, googleAuthParam)
         var authRes = await authData.json()
 
-        const googleSheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${rawTitle}!A:D`
+        const googleSheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${rawTitle}!A:D`
         const googleSheetParam = {
             method: 'GET',
             headers: {
@@ -91,7 +92,7 @@ export default {
                     for await (let including of includeArray) {
                         var including2 = including.split(']()')[0]
                         try {
-                            const googleSheetUrl2 = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${including2}!A:D`
+                            const googleSheetUrl2 = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${including2}!A:D`
                             var sheetData2 = await fetch(googleSheetUrl2, googleSheetParam)
                             var sheetRes2 = await sheetData2.json()
                             var content = sheetRes2.values[sheetRes2.values.length - 1][2]
@@ -104,10 +105,7 @@ export default {
             }
         }
 
-        // var wikiBody1 = wikiBody.replace(/\\n/gm, '\n')
-        // var wikiBody1 = wikiBody1.replace(/\[(.+)\]\(([^\:].+)\)/gm, `[$1](/$2)`)
-        // var wikiBody1 = wikiBody1.replace(/\[(.+)\]\(\)/gm, `[$1](/$1)`)
-        return { wikiTitle, rawTitle, wikiBody }
+        return { wikiTitle, rawTitle, wikiBody, sheetId, clientId, wikiUrl }
     }
 }
 </script>

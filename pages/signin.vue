@@ -2,7 +2,7 @@
     <div id="app">
         <div id="wrapper">
             <div id="navbar">
-                <a href="./"><div id="logo">{{ wikiTitle }}</div></a>
+                <a id="wikiUrl" :href="wikiUrl"><div id="logo">{{ wikiTitle }}</div></a>
                 <div id="member-info">
                     <div id="search"><input id="search-input"> <a id="search-button"><i class='bx bx-search'></i></a></div>
                     <div id="status"><span id="isLogin"><i class="bx bx-user-x" onclick="handleAuthClick()" ></i></span></div>
@@ -16,7 +16,10 @@
                     <div id="content"></div>
                     
                 </div>
-                <div id="footer" :class="cliSecret">
+                <div id="footer">
+                    <div id="cid" :class="clientId">
+                        <div id="sc" :class="clientSecret"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -24,13 +27,6 @@
 </template>
 
 <script>
-
-const jwt = require('jsonwebtoken');
-const querystring = require("querystring");
-
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-}
 
 export default {
     head () {
@@ -53,12 +49,11 @@ export default {
       ]
     }
   },
-    async asyncData ({$config: { clientSecret }}) {
+    async asyncData ({$config: { clientSecret }, $config: { clientId }, $config: { wikiUrl }}) {
 
-        var wikiTitle = '샘플 위키'
-        var cliSecret = clientSecret
+        wikiUrl = 'https://'+wikiUrl
 
-        return { wikiTitle, cliSecret }
+        return { wikiTitle, clientSecret, clientId, wikiUrl }
     }
 }
 </script>

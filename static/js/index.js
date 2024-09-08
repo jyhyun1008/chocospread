@@ -40,14 +40,14 @@ if (localStorage.getItem('googleToken')) {
     }
 }
 
-document.querySelector('#search-button').href = './'
+document.querySelector('#search-button').href = document.querySelector('#wikiUrl').href
 document.querySelector('#search-input').addEventListener("input", (e) => {
-    document.querySelector('#search-button').href= "./"+document.querySelector('#search-input').value
+    document.querySelector('#search-button').href= document.querySelector('#wikiUrl').href+document.querySelector('#search-input').value
 })
 
 document.querySelector('#search-input').addEventListener("keyup", (e) => {
     if (e.keyCode == 13) {
-        location.href= "./"+document.querySelector('#search-input').value
+        location.href= document.querySelector('#wikiUrl').href+document.querySelector('#search-input').value
     }
 })
 
@@ -58,23 +58,27 @@ function parseWiki(text) {
     var text = text.replace(/\\n\\n/gm, '\n\n')
     text = text.replace(/\\n/gm, '\n')
     var markdown = marked.parse(text)
-    markdown = markdown.replace(/href\=\"([^\"\:]+)\"\>([^\<]+)\</gm, 'href="./$1">$2<')
-    markdown = markdown.replace(/href\=\"\"\>([^\<]+)\</gm, 'href="./$1">$1<')
-    markdown = markdown.replace(/\.\/([^\"\:\<\>]+)\/([^\"\:\<\>\/]+)\"/gm, './$1%2F$2"')
+    markdown = markdown.replace(/href\=\"([^\"\:]+)\"\>([^\<]+)\</gm,`href="${document.querySelector('#wikiUrl').href}$1">$2<`)
+    markdown = markdown.replace(/href\=\"\"\>([^\<]+)\</gm, `href="${document.querySelector('#wikiUrl').href}$1">$1<`)
+    markdown = markdown.replace(/\.\/([^\"\:\<\>]+)\/([^\"\:\<\>\/]+)\"/gm, `${document.querySelector('#wikiUrl').href}$1%2F$2"`)
 
     return markdown
 }
 
 function handleEditClick() {
-    location.href="./"+title+"?e=true"
+    location.href= document.querySelector('#wikiUrl').href+title+"?e=true"
 }
 
 function handleHistoryClick() {
-    location.href="./"+title+"?v=list"
+    location.href= document.querySelector('#wikiUrl').href+title+"?v=list"
 }
 
 function handleAuthClick() {
-    location.href="https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=https%3A%2F%2Fwiki.rongo.moe%2Fsignin%2F&client_id=876385603351-6dho403hu41litd5us9bedkjed165g4f.apps.googleusercontent.com"
+
+    var wikiUrl = encodeURIComponent(document.querySelector('#wikiUrl').href)
+    var clientId = document.querySelector('#cid').className
+
+    location.href=`https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=${wikiUrl}signin%2F&client_id=${clientId}`
 }
 
 function simpleParse(text) {
@@ -110,7 +114,10 @@ async function editDocs(range, title, input, email, at) {
     let body = JSON.stringify({
         values: values
     })
-    var appendDocsUrl = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${title}:append?valueInputOption=RAW`
+
+    var sheetId = document.querySelector('#sheetId').className
+
+    var appendDocsUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${title}:append?valueInputOption=RAW`
     var appendDocsParam = {
         method: 'POST',
         headers: {
@@ -123,7 +130,7 @@ async function editDocs(range, title, input, email, at) {
     console.log(appendDocsRes)
     beforeUnloadAlert = false
 
-    location.href="./"
+    location.href = document.querySelector('#wikiUrl').href
 }
 
 if (version == 'list') {
@@ -137,7 +144,7 @@ if (version == 'list') {
     document.querySelector("#content").innerHTML = parseWiki(wikiJSON[wikiJSON.length - 1][2].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$2'))
 } else if (edit && !version) {
     if (googleToken == '') {
-        location.href="./"+title
+        location.href= document.querySelector('#wikiUrl').href + title
     } 
     document.querySelector('#content').innerHTML = '<div id="post-label">'+title+' 편집: <span id="wordcount"></span></div><textarea id="post-input" oninput="changePostDisabled(this)">'+wikiJSON[wikiJSON.length - 1][2].replace(/\\n/gm, '&#010;').replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '![$1]()')+`</textarea><button id="post-button" disabled="true" onclick="editDocs(${JSON.stringify(wikiJSON.length - 1)},'${title}',document.querySelector('#post-input').value, '${googleEmail}', '${googleToken}')">편집 완료!</button><div id="post-preview"></div>`;
     
