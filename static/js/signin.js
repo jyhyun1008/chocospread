@@ -50,7 +50,7 @@ async function getAccess(){
     }
     var userData = await fetch(userInfoUrl, userInfoParam)
     var userRes = await userData.json()
-    console.log(userRes)
+    localStorage.setItem('googleEmail', userRes.email)
 }
 
 getAccess()

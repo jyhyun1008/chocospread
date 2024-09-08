@@ -53,46 +53,10 @@ export default {
       ]
     }
   },
-    async asyncData ({$config: { privateKey }}) {
+    async asyncData ({$config: { clientSecret }}) {
 
         var wikiTitle = '샘플 위키'
-
-        var secretKey = privateKey.replace(/\\n/gm, '\n')
-        var cliSecret = ''
-
-        const token = jwt.sign(
-            { "iss": "samplewiki@musictart.iam.gserviceaccount.com", "scope": "https://www.googleapis.com/auth/spreadsheets", "aud": "https://oauth2.googleapis.com/token" },
-            secretKey,
-            { algorithm: 'RS256', expiresIn: "1h", keyid: "b7c157e4d406c1d29acc1783b7a36fea02ee5579" }
-        );
-
-        const googleAuthUrl = 'https://oauth2.googleapis.com/token'
-        const googleAuthParam = {
-                method: 'POST',
-                headers: {
-                    'content-type': "application/x-www-form-urlencoded",
-                },
-                body: querystring.stringify({
-                    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-                    assertion: token
-                })
-            }
-
-        var authData = await fetch(googleAuthUrl, googleAuthParam)
-        var authRes = await authData.json()
-
-        const configUrl = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/CONFIG!F2`
-        const googleSheetParam = {
-            method: 'GET',
-            headers: {
-                "content-type": "application/json",
-                Authorization: "Bearer " + authRes.access_token,
-            },
-        }
-
-        var configData = await fetch(configUrl, googleSheetParam)
-        var configRes = await configData.json()
-        cliSecret = configRes.values[0][0]
+        var cliSecret = clientSecret
 
         return { wikiTitle, cliSecret }
     }
