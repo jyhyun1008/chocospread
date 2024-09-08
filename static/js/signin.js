@@ -15,15 +15,13 @@ async function initializeGapiClient() {
             try {
                 var confirmAPI = await fetch('https://wiki.rongo.moe/API_KEY/AIzaSy'+API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i))
                 console.log(confirmAPI.status)
-                if (confirmAPI.status != '404') {
-                    API_KEY_conf = 'AIzaSy' + API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i)
-                }
                 // var confirmData = await confirmAPI.text()
                 // if (confirmData.split('<div>')[1].split('</div>')[0] === 'true') {
                 //     
                 // }
             } catch (err) {
                 console.log(err)
+                API_KEY_conf = 'AIzaSy' + API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i)
             }
         }
     
