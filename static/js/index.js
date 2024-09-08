@@ -79,13 +79,14 @@ async function editDocs(range, title, input, email, at) {
 
     input = input.replace(/\n/gm, '\\n')
     let values = [
-        range,
-        new Date(),
-        input,
-        email
+        [
+            range,
+            new Date(),
+            input,
+            email
+        ]
     ]
     let body = JSON.stringify({
-        range: title,
         values: values
     })
     var appendDocsUrl = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${title}:append`
