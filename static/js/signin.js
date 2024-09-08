@@ -17,7 +17,7 @@ var qs = getQueryStringObject()
 var token = qs.token
 
 if (!token) {
-    location.href = document.querySelector('#wikiUrl').href
+   // location.href = document.querySelector('#wikiUrl').href
 } else {
     //localStorage.setItem('googleToken', token)
     getAccess()
