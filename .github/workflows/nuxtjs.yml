@@ -74,7 +74,7 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} run generate
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}  # 이 단계에서도 필요하다면 추가
-          API_KEY: ${{ secrets.API_KEY }}  # 이 단계에서도 필요하다면 추가
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}  # 이 단계에서도 필요하다면 추가
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
