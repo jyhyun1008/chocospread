@@ -114,7 +114,7 @@ if (version == 'list') {
     if (googleToken == '') {
         location.href="./"+title
     } 
-    document.getElementById('content').innerHTML = '<div id="post-label">'+title+' 편집: <span id="wordcount"></span></div><textarea id="post-input" oninput="changePostDisabled(this)">'+wikiJSON[wikiJSON.length - 1][2].replace(/\\n/gm, '&#010;').replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '![$1]()')+`</textarea><button id="post-button" disabled="true" onclick="editDocs(${JSON.stringify(wikiJSON.length)},'${title}',document.querySelector('#post-input').value, ${googleEmail}, ${googleToken})">편집 완료!</button><div id="post-preview"></div>`;
+    document.getElementById('content').innerHTML = '<div id="post-label">'+title+' 편집: <span id="wordcount"></span></div><textarea id="post-input" oninput="changePostDisabled(this)">'+wikiJSON[wikiJSON.length - 1][2].replace(/\\n/gm, '&#010;').replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '![$1]()')+`</textarea><button id="post-button" disabled="true" onclick="editDocs(${JSON.stringify(wikiJSON.length)},'${title}',document.querySelector('#post-input').value, '${googleEmail}', '${googleToken}')">편집 완료!</button><div id="post-preview"></div>`;
     
     window.addEventListener('beforeunload', function (e) {
         if (!beforeUnloadAlert) return;
