@@ -27,6 +27,9 @@ if (localStorage.getItem('googleToken')) {
         localStorage.removeItem('googleToken')
         localStorage.removeItem('googleEmail')
         localStorage.removeItem('expireDate')
+        googleToken = ''
+        googleEmail = ''
+        expireDate = new Date()
     }
 }
 
@@ -72,7 +75,7 @@ function changePostDisabled(e) {
     }
 }
 
-async function editDocs(range, title, input, email) {
+async function editDocs(range, title, input, email, at) {
 
     input = input.replace(/\n/gm, '\\n')
     let values = [
@@ -87,6 +90,9 @@ async function editDocs(range, title, input, email) {
     var appendDocsUrl = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${title}:append`
     var appendDocsParam = {
         method: 'POST',
+        headers: {
+            Authorization: "Bearer " + at,
+        },
         body: body
     }
     var appendDocs = await fetch(appendDocsUrl, appendDocsParam)
@@ -108,7 +114,7 @@ if (version == 'list') {
     if (googleToken == '') {
         location.href="./"+title
     } 
-    document.getElementById('content').innerHTML = '<div id="post-label">'+title+' 편집: <span id="wordcount"></span></div><textarea id="post-input" oninput="changePostDisabled(this)">'+wikiJSON[wikiJSON.length - 1][2].replace(/\\n/gm, '&#010;').replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '![$1]()')+`</textarea><button id="post-button" disabled="true" onclick="editDocs(${JSON.stringify(wikiJSON.length)},'${title}',document.querySelector('#post-input').value)">편집 완료!</button><div id="post-preview"></div>`;
+    document.getElementById('content').innerHTML = '<div id="post-label">'+title+' 편집: <span id="wordcount"></span></div><textarea id="post-input" oninput="changePostDisabled(this)">'+wikiJSON[wikiJSON.length - 1][2].replace(/\\n/gm, '&#010;').replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '![$1]()')+`</textarea><button id="post-button" disabled="true" onclick="editDocs(${JSON.stringify(wikiJSON.length)},'${title}',document.querySelector('#post-input').value, ${googleEmail}, ${googleToken})">편집 완료!</button><div id="post-preview"></div>`;
     
     window.addEventListener('beforeunload', function (e) {
         if (!beforeUnloadAlert) return;
