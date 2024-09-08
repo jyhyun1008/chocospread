@@ -16,7 +16,7 @@
                     <div id="content"></div>
                     
                 </div>
-                <div id="footer" :class="apiKey">
+                <div id="footer" :class="cliSecret">
                 </div>
             </div>
         </div>
@@ -41,11 +41,11 @@ export default {
         ],
       script: [
         // { src: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js', defer: true },
-        { src: 'https://apis.google.com/js/api.js'},
+        // { src: 'https://apis.google.com/js/api.js'},
         // { src: 'https://cdn.jsdelivr.net/npm/http-querystring-stringify@2.1.0/index.js' },
         // { src: 'https://accounts.google.com/gsi/client'},
         // { src: 'js/settings.js', defer: true },
-        { src: 'js/signin.js?v=19', defer: true },
+        { src: 'js/signin.js?v=20', defer: true },
       ],
       link: [
         { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
@@ -58,7 +58,7 @@ export default {
         var wikiTitle = '샘플 위키'
 
         var secretKey = privateKey.replace(/\\n/gm, '\n')
-        var apiKey = ''
+        var cliSecret = ''
 
         const token = jwt.sign(
             { "iss": "samplewiki@musictart.iam.gserviceaccount.com", "scope": "https://www.googleapis.com/auth/spreadsheets", "aud": "https://oauth2.googleapis.com/token" },
@@ -92,11 +92,9 @@ export default {
 
         var configData = await fetch(configUrl, googleSheetParam)
         var configRes = await configData.json()
-        apiKey = configRes.values[0][0].split('AIzaSy')[1]
-        var randomInt = getRandomInt(apiKey.length)
-        apiKey = 'AIzaSy' + apiKey.slice(randomInt) + apiKey.slice(0, randomInt)
+        cliSecret = configRes.values[0][0]
 
-        return { wikiTitle, apiKey }
+        return { wikiTitle, cliSecret }
     }
 }
 </script>

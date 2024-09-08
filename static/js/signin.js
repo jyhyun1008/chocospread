@@ -1,106 +1,47 @@
-let tokenClient;
-let gapiInited = false;
-let gisInited = false;
 
-function gapiLoaded() {
-    gapi.load('client', initializeGapiClient);
+function getQueryStringObject() {
+    var a = window.location.search.substr(1).split('&');
+    if (a == "") return {};
+    var b = {};
+    for (var i = 0; i < a.length; ++i) {
+        var p = a[i].split('=', 2);
+        if (p.length == 1)
+            b[p[0]] = "";
+        else
+            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
 }
 
-async function initializeGapiClient() {
+var qs = getQueryStringObject()
+var code = qs.code
 
-    // TODO(developer): Set to client ID and API key from the Developer Console
-    const API_KEY = document.querySelector('#footer').className.split('AIzaSy')[1];
-    var API_KEY_conf = ''
+localStorage.setItem('googleToken', code)
 
-    for (let i=0;i< API_KEY.length;i++) {
-        try {
-            var confirmAPI = await fetch('https://wiki.rongo.moe/API_KEY/AIzaSy'+API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i))
-            console.log(confirmAPI.status)
-            if (confirmAPI.status == '404') {
-                throw Error('404');
-            }
-            // var confirmData = await confirmAPI.text()
-            // if (confirmData.split('<div>')[1].split('</div>')[0] === 'true') {
-            //     
-            // }
-        } catch (err) {
-            if (err != '404') {
-                API_KEY_conf = 'AIzaSy' + API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i)
-            }
-        }
+async function getAccess(){
+    const getAccessTokenUrl = 'https://oauth2.googleapis.com/token'
+    const getAccessTokenParam = {
+        method: 'POST',
+        headers: {
+            'content-type': "application/x-www-form-urlencoded",
+        },
+        body: stringify({
+            code: code,
+            client_id: '876385603351-jv2v0054q5ho1lc8rg216pkucqsdqnug.apps.googleusercontent.com',
+            client_secret: document.querySelector('#footer').className,
+            redirect_uri: location.origin+'/login/'
+        })
     }
 
-    console.log(API_KEY_conf)
-
-    await gapi.client.init({
-        apiKey: API_KEY_conf,
-        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-    });
-
-    gapiInited = true;
-
-    //maybeEnableButtons();
-    
-    handleAuthClick()
-
+    var accessData = await fetch(getAccessTokenUrl, getAccessTokenParam)
+    var accessRes = await accessData.json()
+    console.log(accessRes)
 }
 
+getAccess()
 
-document.addEventListener("DOMContentLoaded", () => {
-    gapiLoaded()
-  });
-
-function handleAuthClick() {
-
-    tokenClient.callback = async (resp) => {
-        if (resp.error !== undefined) {
-            throw (resp);
-        }
-        var token = JSON.stringify(gapi.client.getToken())
-        var tokenExpireDate = new Date()
-        tokenExpireDate.setHours(tokenExpireDate.getHours() + 1);
-        localStorage.setItem('googleToken', token)
-        localStorage.setItem('tokenExpireDate', tokenExpireDate)
-
-        await renderContent(title);
-    };
-
-    if ( gapi.client.getToken() === null) {
-        // Prompt the user to select a Google Account and ask for consent to share their data
-        // when establishing a new session.
-        tokenClient.requestAccessToken({prompt: 'consent'});
-        var token = JSON.stringify(gapi.client.getToken())
-        var tokenExpireDate = new Date()
-        tokenExpireDate.setHours(tokenExpireDate.getHours() + 1);
-        localStorage.setItem('googleToken', token)
-        localStorage.setItem('tokenExpireDate', tokenExpireDate)
-    } else {
-        // Skip display of account chooser and consent dialog for an existing session.
-        tokenClient.requestAccessToken({prompt: ''});
-    }
-    
-}
-
-// function getQueryStringObject() {
-//     var a = window.location.search.substr(1).split('&');
-//     if (a == "") return {};
-//     var b = {};
-//     for (var i = 0; i < a.length; ++i) {
-//         var p = a[i].split('=', 2);
-//         if (p.length == 1)
-//             b[p[0]] = "";
-//         else
-//             b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
-//     }
-//     return b;
-// }
-
-// var qs = getQueryStringObject()
-// var code = qs.code
-
-// localStorage.setItem('googleToken', code)
-// //async function handleCredentialResponse(response) {
-//     //console.log("Encoded JWT ID token: " + response.credential);
+//async function handleCredentialResponse(response) {
+    //console.log("Encoded JWT ID token: " + response.credential);
 // async function getUserInfo() {
 //     const userInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo"
 //     const userInfoParam = {
@@ -115,6 +56,7 @@ function handleAuthClick() {
 // }
 
 // getUserInfo()
+
 //     const googleAuthUrl = 'https://oauth2.googleapis.com/token'
 //     const googleAuthParam = {
 //             method: 'POST',
