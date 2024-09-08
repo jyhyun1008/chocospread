@@ -14,6 +14,7 @@
                 </div>
                 <div id="content-box">
                     <div id="content"></div>
+                    <div id="sheetId" :class="sheetId"></div>
                 </div>
                 <div id="footer">
                 </div>
@@ -32,7 +33,7 @@ export default {
         {content: "upgrade-insecure-requests"}
         ],
       script: [
-        { src: 'js/gen.js?v=0', defer: true },
+        { src: 'js/gen.js?v=1', defer: true },
       ],
       link: [
         { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
@@ -40,11 +41,11 @@ export default {
       ]
     }
   },
-    async asyncData ({ $config: { wikiUrl }, $config: { wikiTitle }}) {
+    async asyncData ({ $config: { wikiUrl }, $config: { wikiTitle }, $config: { sheetId }}) {
 
         wikiUrl = 'https://'+wikiUrl
 
-        return { wikiTitle, wikiUrl }
+        return { wikiTitle, wikiUrl, sheetId }
     }
 }
 </script>

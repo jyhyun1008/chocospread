@@ -49,6 +49,7 @@ if (localStorage.getItem('googleToken')) {
 }
 
 async function postDocs(title) {
+    var sheetId = document.querySelector('#sheetId').className
     var postDocsUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchUpdate`
     const body = JSON.stringify({
         "requests":{
