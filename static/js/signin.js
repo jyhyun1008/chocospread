@@ -24,6 +24,8 @@ async function initializeGapiClient() {
                 API_KEY_conf = 'AIzaSy' + API_KEY.slice(i, API_KEY.length)+API_KEY.slice(0, i)
             }
         }
+
+        console.log(API_KEY_conf)
     
         await gapi.client.init({
             apiKey: API_KEY_conf,
