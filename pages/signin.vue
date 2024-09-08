@@ -35,6 +35,10 @@ function getRandomInt(max) {
 export default {
     head () {
     return {
+        meta: [
+        {"http-equiv": "Content-Security-Policy"},
+        {content: "upgrade-insecure-requests"}
+        ],
       script: [
         // { src: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js', defer: true },
         { src: 'https://apis.google.com/js/api.js'},
