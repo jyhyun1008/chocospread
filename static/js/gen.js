@@ -83,6 +83,12 @@ async function postDocs(title) {
             'created_at',
             'body',
             'email'
+          ],
+          [
+            '0',
+            new Date(),
+            '',
+            googleEmail.split('@')[0]
           ]
         ];
         let body = JSON.stringify({

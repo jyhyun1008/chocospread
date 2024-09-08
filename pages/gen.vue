@@ -36,7 +36,7 @@ export default {
         {content: "upgrade-insecure-requests"}
         ],
       script: [
-        { src: 'js/gen.js?v=4', defer: true },
+        { src: 'js/gen.js?v=5', defer: true },
       ],
       link: [
         { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
