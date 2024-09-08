@@ -10,11 +10,10 @@
             </div>
             <div id="sub-wrapper">
                 <div id="title-box">
-                    <h1 id="doc-title">로그인</h1>
+                    <h1 id="doc-title">새 문서 생성</h1>
                 </div>
                 <div id="content-box">
                     <div id="content"></div>
-                    
                 </div>
                 <div id="footer">
                 </div>

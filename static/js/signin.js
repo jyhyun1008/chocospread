@@ -1,4 +1,3 @@
-
 function getQueryStringObject() {
     var a = window.location.href.split('&');
     if (a == "") return {};
