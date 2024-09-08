@@ -139,9 +139,44 @@ if (version == 'list') {
         document.querySelector('#version-list>tbody').innerHTML += '<tr><td>v'+(wikiJSON.length-1-i)+'</td><td>'+wikiJSON[(wikiJSON.length-1-i)][1]+'</td><td>'+wikiJSON[(wikiJSON.length-1-i)][3]+'</td><td><a href="./'+title+'?v='+(wikiJSON.length-1-i)+'">읽기</a> · <a href="./'+title+'?e=true&v='+(wikiJSON.length-1-i)+'">이 버전으로부터 편집</a></td></tr>';
     }
 } else if (version && !edit) {
-    document.querySelector("#content").innerHTML = parseWiki(wikiJSON[version][2].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$2'))
+    //document.querySelector("#content").innerHTML = parseWiki(wikiJSON[version][2].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$2'))
+    var wikiRawArray = wikiJSON[version][2].split('```')
+    for (let i=0; i<wikiRawArray.length; i++){
+        if (i % 2 == 0) {
+            var wikiRawinnerArray = wikiRawArray[i].split('`')
+            for (let j=0; j<wikiRawinnerArray.length; j++){
+                if (j % 2 == 0) {
+                    wikiRawinnerArray[j] = wikiRawinnerArray[j].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$2')
+                } else {
+                    wikiRawinnerArray[j] = wikiRawinnerArray[j].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$1')
+                }
+            }
+            wikiRawArray[i] = wikiRawinnerArray.join('`')
+        } else {
+            wikiRawArray[i] = wikiRawArray[i].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$1')
+        }
+    }
+    var wikiRawText = wikiRawArray.join('```')
+    document.querySelector("#content").innerHTML = parseWiki(wikiRawText)
 } else if (!version && !edit) {
-    document.querySelector("#content").innerHTML = parseWiki(wikiJSON[wikiJSON.length - 1][2].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$2'))
+    var wikiRawArray = wikiJSON[wikiJSON.length - 1][2].split('```')
+    for (let i=0; i<wikiRawArray.length; i++){
+        if (i % 2 == 0) {
+            var wikiRawinnerArray = wikiRawArray[i].split('`')
+            for (let j=0; j<wikiRawinnerArray.length; j++){
+                if (j % 2 == 0) {
+                    wikiRawinnerArray[j] = wikiRawinnerArray[j].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$2')
+                } else {
+                    wikiRawinnerArray[j] = wikiRawinnerArray[j].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$1')
+                }
+            }
+            wikiRawArray[i] = wikiRawinnerArray.join('`')
+        } else {
+            wikiRawArray[i] = wikiRawArray[i].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$1')
+        }
+    }
+    var wikiRawText = wikiRawArray.join('```')
+    document.querySelector("#content").innerHTML = parseWiki(wikiRawText)
 } else if (edit && !version) {
     if (googleToken == '') {
         location.href= document.querySelector('#wikiUrl').href + title
