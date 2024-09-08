@@ -16,7 +16,12 @@ function getQueryStringObject() {
 var qs = getQueryStringObject()
 var code = qs.code
 
-localStorage.setItem('googleToken', code)
+if (!code) {
+    location.href = document.querySelector('#wikiUrl').href
+} else {
+    localStorage.setItem('googleToken', code)
+    getAccess()
+}
 
 async function getAccess(){
     const getAccessTokenUrl = 'https://oauth2.googleapis.com/token'
@@ -54,5 +59,3 @@ async function getAccess(){
 
     location.href = document.querySelector('#wikiUrl').href
 }
-
-getAccess()
