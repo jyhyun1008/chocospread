@@ -15,6 +15,7 @@
                 <div id="content-box">
                     <div id="content"></div>
                     <div id="sheetId" :class="sheetId"></div>
+                    <div id="wikiList" style="display: none;">{{ wikiList }}</div>
                 </div>
                 <div id="footer">
                 </div>
@@ -24,6 +25,8 @@
 </template>
 
 <script>
+const jwt = require('jsonwebtoken');
+const querystring = require("querystring");
 
 export default {
     head () {
@@ -33,7 +36,7 @@ export default {
         {content: "upgrade-insecure-requests"}
         ],
       script: [
-        { src: 'js/gen.js?v=3', defer: true },
+        { src: 'js/gen.js?v=4', defer: true },
       ],
       link: [
         { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
@@ -41,11 +44,49 @@ export default {
       ]
     }
   },
-    async asyncData ({ $config: { wikiUrl }, $config: { wikiTitle }, $config: { sheetId }}) {
+    async asyncData ({ $config: { wikiUrl }, $config: { wikiTitle }, $config: { sheetId }, $config: { privateKey }, $config: { privateKeyId }}) {
 
         wikiUrl = 'https://'+wikiUrl
 
-        return { wikiTitle, wikiUrl, sheetId }
+        var secretKey = privateKey.replace(/\\n/gm, '\n')
+
+        const token = jwt.sign(
+            { "iss": "samplewiki@musictart.iam.gserviceaccount.com", "scope": "https://www.googleapis.com/auth/spreadsheets", "aud": "https://oauth2.googleapis.com/token" },
+            secretKey,
+            { algorithm: 'RS256', expiresIn: "1h", keyid: privateKeyId }
+        );
+
+        const googleAuthUrl = 'https://oauth2.googleapis.com/token'
+        const googleAuthParam = {
+                method: 'POST',
+                headers: {
+                    'content-type': "application/x-www-form-urlencoded",
+                },
+                body: querystring.stringify({
+                    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+                    assertion: token
+                })
+            }
+
+        var authData = await fetch(googleAuthUrl, googleAuthParam)
+        var authRes = await authData.json()
+
+        const googleSheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/`
+        const googleSheetParam = {
+            method: 'GET',
+            headers: {
+                "content-type": "application/json",
+                Authorization: "Bearer " + authRes.access_token,
+            },
+        }
+        var sheetData3 = await fetch(googleSheetUrl, googleSheetParam)
+        var sheetRes3 = await sheetData3.json()
+        var wikiListArray = sheetRes3.sheets
+        var wikiList = []
+        for (let i=0; i<wikiListArray.length; i++) {
+            wikiList.push(wikiListArray[i].properties.title)
+        }
+        return { wikiTitle, wikiUrl, sheetId, wikiList }
     }
 }
 </script>

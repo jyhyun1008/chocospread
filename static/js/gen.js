@@ -23,6 +23,11 @@ var expireDate = new Date()
 
 document.querySelector('#isLogin').innerHTML = '<i class="bx bx-user-x" onclick="handleAuthClick()" ></i>'
 
+var wikiList = eval(document.querySelector("#wikiList").innerText)
+if (wikiList.includes(docs)) {
+    location.href = document.querySelector('#wikiUrl').href + docs
+}
+
 if (localStorage.getItem('googleToken')) {
     googleToken = localStorage.getItem('googleToken')
     googleEmail = localStorage.getItem('googleEmail')
@@ -50,7 +55,7 @@ if (localStorage.getItem('googleToken')) {
 
 async function postDocs(title) {
     var sheetId = document.querySelector('#sheetId').className
-    var postDocsUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchUpdate`
+    var postDocsUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}:batchUpdate`
     const body = JSON.stringify({
         "requests":{
             "addSheet":{

@@ -65,7 +65,7 @@ export default {
       const token = jwt.sign(
           { "iss": "samplewiki@musictart.iam.gserviceaccount.com", "scope": "https://www.googleapis.com/auth/spreadsheets", "aud": "https://oauth2.googleapis.com/token" },
           secretKey,
-          { algorithm: 'RS256', expiresIn: "1h", keyid: "b7c157e4d406c1d29acc1783b7a36fea02ee5579" }
+          { algorithm: 'RS256', expiresIn: "1h", keyid: process.env.PRIVATE_KEY_ID }
       );
 
       const googleAuthUrl = 'https://oauth2.googleapis.com/token'
@@ -83,7 +83,7 @@ export default {
       var authData = await fetch(googleAuthUrl, googleAuthParam)
       var authRes = await authData.json()
 
-      const googleSheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/`
+      const googleSheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${process.env.SPREADSHEET}/`
       const googleSheetParam = {
           method: 'GET',
           headers: {
