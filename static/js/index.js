@@ -127,9 +127,9 @@ async function editDocs(range, title, input, email, at) {
 }
 
 if (version == 'list') {
-    document.getElementById('content').innerHTML = '<div>변경 기록</div><table id="version-list"><thead><tr><td>버전</td><td>변경 날짜</td><td>작업 수행</td></tr></thead><tbody></tbody></table>';
+    document.getElementById('content').innerHTML = '<div>변경 기록</div><table id="version-list"><thead><tr><td>버전</td><td>변경 날짜</td><td>편집자</td><td>작업 수행</td></tr></thead><tbody></tbody></table>';
     for (var i=0; i<wikiJSON.length - 1; i++) {
-        document.querySelector('#version-list>tbody').innerHTML += '<tr><td>v'+(wikiJSON.length-1-i)+'</td><td>'+wikiJSON[(wikiJSON.length-1-i)][1]+'</td><td><a href="./'+title+'?v='+(wikiJSON.length-1-i)+'">읽기</a> · <a href="./'+title+'?e=true&v='+(wikiJSON.length-1-i)+'">이 버전으로부터 편집</a></td></tr>';
+        document.querySelector('#version-list>tbody').innerHTML += '<tr><td>v'+(wikiJSON.length-1-i)+'</td><td>'+wikiJSON[(wikiJSON.length-1-i)][1]+'</td><td>'+wikiJSON[(wikiJSON.length-1-i)][3]+'</td><td><a href="./'+title+'?v='+(wikiJSON.length-1-i)+'">읽기</a> · <a href="./'+title+'?e=true&v='+(wikiJSON.length-1-i)+'">이 버전으로부터 편집</a></td></tr>';
     }
 } else if (version && !edit) {
     document.querySelector("#content").innerHTML = parseWiki(wikiJSON[version][2].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$2'))

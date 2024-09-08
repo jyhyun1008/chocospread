@@ -38,7 +38,7 @@ export default {
                 // { src: 'https://apis.google.com/js/api.js'},
                 // { src: 'https://accounts.google.com/gsi/client'},
                 // { src: '../js/settings.js', defer: true },
-                { src: '../js/index.js?v=6', defer: true },
+                { src: '../js/index.js?v=7', defer: true },
             ],
             link: [
                 { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
@@ -75,7 +75,7 @@ export default {
         var authData = await fetch(googleAuthUrl, googleAuthParam)
         var authRes = await authData.json()
 
-        const googleSheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${title}!A:C`
+        const googleSheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${title}!A:D`
         const googleSheetParam = {
             method: 'GET',
             headers: {
@@ -94,7 +94,7 @@ export default {
                     for await (let including of includeArray) {
                         var including2 = including.split(']()')[0]
                         try {
-                            const googleSheetUrl2 = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${including2}!A:C`
+                            const googleSheetUrl2 = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${including2}!A:D`
                             var sheetData2 = await fetch(googleSheetUrl2, googleSheetParam)
                             var sheetRes2 = await sheetData2.json()
                             var content = sheetRes2.values[sheetRes2.values.length - 1][2]
