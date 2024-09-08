@@ -51,6 +51,8 @@ async function getAccess(){
     var userData = await fetch(userInfoUrl, userInfoParam)
     var userRes = await userData.json()
     localStorage.setItem('googleEmail', userRes.email)
+
+    location.href="./"
 }
 
 getAccess()

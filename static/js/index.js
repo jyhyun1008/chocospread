@@ -101,6 +101,8 @@ async function editDocs(range, title, input, email, at) {
     var appendDocsRes = await appendDocs.json()
     console.log(appendDocsRes)
     beforeUnloadAlert = false
+
+    location.href="./"
 }
 
 if (version == 'list') {
