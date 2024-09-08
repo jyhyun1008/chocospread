@@ -16,6 +16,20 @@ var qs = getQueryStringObject()
 var edit = qs.e
 var version = qs.v
 
+var googleToken = ''
+var googleEmail = ''
+var expireDate = new Date()
+if (localStorage.getItem('googleToken')) {
+    googleToken = localStorage.getItem('googleToken')
+    googleEmail = localStorage.getItem('googleEmail')
+    expireDate = Date.parse(localStorage.getItem('tokenExpireDate'))
+    if (expireDate < new Date()){
+        localStorage.removeItem('googleToken')
+        localStorage.removeItem('googleEmail')
+        localStorage.removeItem('expireDate')
+    }
+}
+
 const title = document.getElementById('doc-title').innerText
 
 var wikiJSON = JSON.parse(document.querySelector("#content-hide").innerText)
@@ -58,6 +72,29 @@ function changePostDisabled(e) {
     }
 }
 
+async function editDocs(range, title, input, email) {
+
+    input = input.replace(/\n/gm, '\\n')
+    let values = [
+        range,
+        new Date(),
+        input,
+        email
+    ]
+    let body = JSON.stringify({
+        values: values
+    })
+    var appendDocsUrl = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${title}:append`
+    var appendDocsParam = {
+        method: 'POST',
+        body: body
+    }
+    var appendDocs = await fetch(appendDocsUrl, appendDocsParam)
+    var appendDocsRes = await appendDocs.json()
+    console.log(appendDocsRes)
+    beforeUnloadAlert = false
+}
+
 if (version == 'list') {
     document.getElementById('content').innerHTML = '<div>변경 기록</div><table id="version-list"><thead><tr><td>버전</td><td>변경 날짜</td><td>작업 수행</td></tr></thead><tbody></tbody></table>';
     for (var i=0; i<wikiJSON.length - 1; i++) {
@@ -68,7 +105,10 @@ if (version == 'list') {
 } else if (!version && !edit) {
     document.querySelector("#content").innerHTML = parseWiki(wikiJSON[wikiJSON.length - 1][2].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$2'))
 } else if (edit && !version) {
-    document.getElementById('content').innerHTML = '<div id="post-label">'+title+' 편집: <span id="wordcount"></span></div><textarea id="post-input" oninput="changePostDisabled(this)">'+wikiJSON[wikiJSON.length - 1][2].replace(/\\n/gm, '&#010;').replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '![$1]()')+`</textarea><button id="post-button" disabled="true" onclick="">편집 완료!</button><div id="post-preview"></div>`;
+    if (googleToken == '') {
+        location.href="./"+title
+    } 
+    document.getElementById('content').innerHTML = '<div id="post-label">'+title+' 편집: <span id="wordcount"></span></div><textarea id="post-input" oninput="changePostDisabled(this)">'+wikiJSON[wikiJSON.length - 1][2].replace(/\\n/gm, '&#010;').replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '![$1]()')+`</textarea><button id="post-button" disabled="true" onclick="editDocs(${JSON.stringify(wikiJSON.length)},'${title}',document.querySelector('#post-input').value)">편집 완료!</button><div id="post-preview"></div>`;
     
     window.addEventListener('beforeunload', function (e) {
         if (!beforeUnloadAlert) return;
