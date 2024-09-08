@@ -17,7 +17,7 @@ var qs = getQueryStringObject()
 var token = qs.access_token
 
 if (!token) {
-    location.href = document.querySelector('#wikiUrl').href
+    //location.href = document.querySelector('#wikiUrl').href
 } else {
     localStorage.setItem('googleToken', token)
     getAccess()
@@ -39,5 +39,5 @@ async function getAccess(){
     var userRes = await userData.json()
     localStorage.setItem('googleEmail', userRes.email)
 
-   location.href = document.querySelector('#wikiUrl').href
+   //location.href = document.querySelector('#wikiUrl').href
 }
