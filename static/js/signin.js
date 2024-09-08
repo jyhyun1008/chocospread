@@ -36,7 +36,21 @@ async function getAccess(){
 
     var accessData = await fetch(getAccessTokenUrl, getAccessTokenParam)
     var accessRes = await accessData.json()
-    console.log(accessRes)
+    var tokenExpireDate = new Date()
+    tokenExpireDate.setHours(tokenExpireDate.getHours() + 1);
+    localStorage.setItem('googleToken', accessRes.access_token)
+    localStorage.setItem('tokenExpireDate', tokenExpireDate)
+
+    const userInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo"
+    const userInfoParam = {
+        method: 'GET',
+        headers: {
+            Authorization: "Bearer " + accessRes.access_token,
+        },
+    }
+    var userData = await fetch(userInfoUrl, userInfoParam)
+    var userRes = await userData.json()
+    console.log(userRes)
 }
 
 getAccess()
