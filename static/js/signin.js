@@ -1,9 +1,9 @@
 
 function getQueryStringObject() {
-    var a = window.location.search.substr(1).split('&');
+    var a = window.location.href.split('&');
     if (a == "") return {};
     var b = {};
-    for (var i = 0; i < a.length; ++i) {
+    for (var i = 1; i < a.length; ++i) {
         var p = a[i].split('=', 2);
         if (p.length == 1)
             b[p[0]] = "";
@@ -17,7 +17,7 @@ var qs = getQueryStringObject()
 var token = qs.access_token
 
 if (!token) {
-    //location.href = document.querySelector('#wikiUrl').href
+    location.href = document.querySelector('#wikiUrl').href
 } else {
     localStorage.setItem('googleToken', token)
     getAccess()
@@ -39,5 +39,5 @@ async function getAccess(){
     var userRes = await userData.json()
     localStorage.setItem('googleEmail', userRes.email)
 
-   //location.href = document.querySelector('#wikiUrl').href
+   location.href = document.querySelector('#wikiUrl').href
 }
