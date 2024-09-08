@@ -19,10 +19,15 @@ var version = qs.v
 var googleToken = ''
 var googleEmail = ''
 var expireDate = new Date()
+
+document.querySelector('#isLogin').innerHTML = '<i class="bx bx-user-x" onclick="handleAuthClick()" ></i>'
+
 if (localStorage.getItem('googleToken')) {
     googleToken = localStorage.getItem('googleToken')
     googleEmail = localStorage.getItem('googleEmail')
     expireDate = Date.parse(localStorage.getItem('tokenExpireDate'))
+    document.querySelector('#edit_button').style = "display: inline;"
+    document.querySelector('#isLogin').innerHTML = '<i class="bx bx-user-voice" onclick="handleSignoutClick()" ></i>'
     if (expireDate < new Date()){
         localStorage.removeItem('googleToken')
         localStorage.removeItem('googleEmail')
@@ -30,11 +35,23 @@ if (localStorage.getItem('googleToken')) {
         googleToken = ''
         googleEmail = ''
         expireDate = new Date()
+        document.querySelector('#edit_button').style = "display: none;"
+        document.querySelector('#isLogin').innerHTML = '<i class="bx bx-user-x" onclick="handleAuthClick()" ></i>'
     }
 }
 
-const title = document.getElementById('doc-title').innerText
+document.querySelector('#search-button').href = './'
+document.querySelector('#search-input').addEventListener("input", (e) => {
+    document.querySelector('#search-button').href= "./?d="+document.querySelector('#search-input').value
+})
 
+document.querySelector('#search-input').addEventListener("keyup", (e) => {
+    if (e.keyCode == 13) {
+        location.href= "./?d="+document.querySelector('#search-input').value
+    }
+})
+
+const title = document.getElementById('doc-title').innerText
 var wikiJSON = JSON.parse(document.querySelector("#content-hide").innerText)
 
 function parseWiki(text) {
@@ -54,6 +71,10 @@ function handleEditClick() {
 
 function handleHistoryClick() {
     location.href="./"+title+"?v=list"
+}
+
+function handleAuthClick() {
+    location.href="https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=https%3A%2F%2Fwiki.rongo.moe%2Fsignin%2F&client_id=876385603351-6dho403hu41litd5us9bedkjed165g4f.apps.googleusercontent.com"
 }
 
 function simpleParse(text) {

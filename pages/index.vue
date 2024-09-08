@@ -15,7 +15,6 @@
                 <div id="content-box">
                     <div id="content"></div>
                     <div id="content-hide" style="display: none;">{{ wikiBody }}</div>
-                    
                 </div>
                 <div id="footer">
                     <!--Add buttons to initiate auth sequence and sign out-->
@@ -33,20 +32,20 @@ const querystring = require("querystring");
 
 export default {
     head () {
-    return {
-      script: [
-        { src: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js', defer: true },
-        // { src: 'https://apis.google.com/js/api.js'},
-        // { src: 'https://accounts.google.com/gsi/client'}
-        // { src: 'js/settings.js', defer: true },
-        { src: 'js/index.js?v=5', defer: true },
-      ],
-      link: [
-        { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
-        { href: 'css/main.css', rel: 'stylesheet'}
-      ]
-    }
-  },
+        return {
+            script: [
+            { src: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js', defer: true },
+            // { src: 'https://apis.google.com/js/api.js'},
+            // { src: 'https://accounts.google.com/gsi/client'}
+            // { src: 'js/settings.js', defer: true },
+            { src: 'js/index.js?v=6', defer: true },
+            ],
+            link: [
+            { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
+            { href: 'css/main.css', rel: 'stylesheet'}
+            ]
+        }
+    },
     async asyncData ({$config: { privateKey }}) {
 
         var wikiTitle = '샘플 위키'
