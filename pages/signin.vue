@@ -42,7 +42,7 @@ export default {
       script: [
         // { src: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js', defer: true },
         // { src: 'https://apis.google.com/js/api.js'},
-        // { src: 'https://cdn.jsdelivr.net/npm/http-querystring-stringify@2.1.0/index.js' },
+        { src: 'https://cdn.jsdelivr.net/npm/http-querystring-stringify@2.1.0/index.js' },
         // { src: 'https://accounts.google.com/gsi/client'},
         // { src: 'js/settings.js', defer: true },
         { src: 'js/signin.js?v=20', defer: true },
