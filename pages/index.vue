@@ -35,7 +35,7 @@ export default {
         return {
             script: [
             { src: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js', defer: true },
-            { src: 'js/index.js?v=10', defer: true },
+            { src: 'js/index.js?v=11', defer: true },
             ],
             link: [
             { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},

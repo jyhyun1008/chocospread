@@ -42,12 +42,12 @@ if (localStorage.getItem('googleToken')) {
 
 document.querySelector('#search-button').href = './'
 document.querySelector('#search-input').addEventListener("input", (e) => {
-    document.querySelector('#search-button').href= "./?d="+document.querySelector('#search-input').value
+    document.querySelector('#search-button').href= "./"+document.querySelector('#search-input').value
 })
 
 document.querySelector('#search-input').addEventListener("keyup", (e) => {
     if (e.keyCode == 13) {
-        location.href= "./?d="+document.querySelector('#search-input').value
+        location.href= "./"+document.querySelector('#search-input').value
     }
 })
 
