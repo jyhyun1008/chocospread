@@ -49,7 +49,7 @@ export default {
       ]
     }
   },
-    async asyncData ({$config: { clientSecret }, $config: { clientId }, $config: { wikiUrl }}) {
+    async asyncData ({$config: { clientSecret }, $config: { clientId }, $config: { wikiUrl }, $config: { wikiTitle }}) {
 
         wikiUrl = 'https://'+wikiUrl
 
