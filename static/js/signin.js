@@ -29,7 +29,8 @@ async function getAccess(){
             code: code,
             client_id: '876385603351-jv2v0054q5ho1lc8rg216pkucqsdqnug.apps.googleusercontent.com',
             client_secret: document.querySelector('#footer').className,
-            redirect_uri: location.origin+'/login/'
+            redirect_uri: location.origin+'/login/',
+            grant_type: 'authorization_code'
         })
     }
 
