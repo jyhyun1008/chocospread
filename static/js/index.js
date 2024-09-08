@@ -148,12 +148,12 @@ if (version == 'list') {
                 if (j % 2 == 0) {
                     wikiRawinnerArray[j] = wikiRawinnerArray[j].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$2')
                 } else {
-                    wikiRawinnerArray[j] = wikiRawinnerArray[j].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$1')
+                    wikiRawinnerArray[j] = wikiRawinnerArray[j].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '![$1]()')
                 }
             }
             wikiRawArray[i] = wikiRawinnerArray.join('`')
         } else {
-            wikiRawArray[i] = wikiRawArray[i].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$1')
+            wikiRawArray[i] = wikiRawArray[i].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '![$1]()')
         }
     }
     var wikiRawText = wikiRawArray.join('```')
@@ -167,12 +167,12 @@ if (version == 'list') {
                 if (j % 2 == 0) {
                     wikiRawinnerArray[j] = wikiRawinnerArray[j].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$2')
                 } else {
-                    wikiRawinnerArray[j] = wikiRawinnerArray[j].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$1')
+                    wikiRawinnerArray[j] = wikiRawinnerArray[j].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '![$1]()')
                 }
             }
             wikiRawArray[i] = wikiRawinnerArray.join('`')
         } else {
-            wikiRawArray[i] = wikiRawArray[i].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '$1')
+            wikiRawArray[i] = wikiRawArray[i].replace(/\!\[([^\[\]].+)\]\(\)\<([^\>]+)\>/gm, '![$1]()')
         }
     }
     var wikiRawText = wikiRawArray.join('```')

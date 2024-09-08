@@ -37,7 +37,7 @@ export default {
         return {
             script: [
             { src: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js', defer: true },
-            { src: 'js/index.js?v=14', defer: true },
+            { src: 'js/index.js?v=15', defer: true },
             ],
             link: [
             { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
@@ -89,16 +89,16 @@ export default {
             for (let j=0; j<wikiBody.length; j++) {
 
                 if (wikiBody[j][2]) {
-                    if (wikiBody[j][2].includes('![') && wikiBody[j][2].includes(']()')) {
+                    if (wikiBody[j][2].includes('![') && wikiBody[j][2].includes(']()\n')) {
                         let includeArray = wikiBody[j][2].split('![').slice(1)
                         for await (let including of includeArray) {
-                            var including2 = including.split(']()')[0]
+                            var including2 = including.split(']()\n')[0]
                             try {
                                 const googleSheetUrl2 = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${including2}!A:D`
                                 var sheetData2 = await fetch(googleSheetUrl2, googleSheetParam)
                                 var sheetRes2 = await sheetData2.json()
                                 var content = sheetRes2.values[sheetRes2.values.length - 1][2]
-                                wikiBody[j][2] = wikiBody[j][2].replace('!['+including2+']()', '!['+including2+']()<'+content+'>')
+                                wikiBody[j][2] = wikiBody[j][2].replace('!['+including2+']()\n', '!['+including2+']()<'+content+'>\n')
                             } catch (err) {
                                 //console.log(err)
                             }
