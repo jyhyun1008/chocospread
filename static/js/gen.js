@@ -63,7 +63,7 @@ async function postDocs(title) {
     var postDocsParam = {
         method: 'POST',
         headers: {
-            Authorization: "Bearer " + at,
+            Authorization: "Bearer " + googleToken,
         },
         body: body
     }
@@ -87,7 +87,7 @@ async function postDocs(title) {
         var appendDocsParam = {
             method: 'POST',
             headers: {
-                Authorization: "Bearer " + at,
+                Authorization: "Bearer " + googleToken,
             },
             body: body
         }
