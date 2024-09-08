@@ -38,7 +38,7 @@ export default {
                 // { src: 'https://apis.google.com/js/api.js'},
                 // { src: 'https://accounts.google.com/gsi/client'},
                 // { src: '../js/settings.js', defer: true },
-                { src: '../js/index.js?v=2', defer: true },
+                { src: '../js/index.js?v=3', defer: true },
             ],
             link: [
                 { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},

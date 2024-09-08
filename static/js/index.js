@@ -87,6 +87,7 @@ async function editDocs(range, title, input, email, at) {
         ]
     ]
     let body = JSON.stringify({
+        valueInputOption: "RAW",
         values: values
     })
     var appendDocsUrl = `https://sheets.googleapis.com/v4/spreadsheets/1iuIYp3-CKgSL1nGw3cODvomShDGNmNWN2xg6Wtho9Hg/values/${title}:append`
