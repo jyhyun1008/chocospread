@@ -39,9 +39,13 @@ if (localStorage.getItem('googleToken')) {
         document.querySelector('#edit_button').style = "display: none;"
         document.querySelector('#isLogin').innerHTML = '<i class="bx bx-user-x" onclick="handleAuthClick()" ></i>'
         document.querySelector('#content').innerText = '문서 생성 권한이 없습니다. 오른쪽 위의 로그인 버튼을 눌러 로그인해 주세요.'
+    } else {
+        if (confirm("새 문서를 생성하시겠습니까?") == true) {
+            postDocs(docs)
+        } else {
+            document.getElementById('content').innerText = "문서 생성을 취소하였습니다.";
+        }
     }
-    postDocs(docs)
-
 } else {
     document.querySelector('#content').innerText = '문서 생성 권한이 없습니다. 오른쪽 위의 로그인 버튼을 눌러 로그인해 주세요.'
 }

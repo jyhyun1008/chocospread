@@ -33,7 +33,7 @@ export default {
         ],
       script: [
         { src: 'https://cdn.jsdelivr.net/npm/http-querystring-stringify@2.1.0/index.js' },
-        { src: 'js/signin.js?v=31', defer: true },
+        { src: 'js/gen.js', defer: true },
       ],
       link: [
         { href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css', rel: 'stylesheet'},
