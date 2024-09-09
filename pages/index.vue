@@ -16,6 +16,7 @@
                     <div id="content"></div>
                     <div id="sheetId" :class="sheetId"></div>
                     <div id="content-hide" style="display: none;">{{ wikiBody }}</div>
+                    <div id="wikiList" style="display: none;">{{ wikiList }}</div>
                 </div>
                 <div id="footer">
                     <!--Add buttons to initiate auth sequence and sign out-->
@@ -110,8 +111,16 @@ export default {
             $router.push( wikiUrl + '/gen?d=' + rawTitle);
         }
         
+        const googleSheetUrl3 = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/`
+        var sheetData3 = await fetch(googleSheetUrl3, googleSheetParam)
+        var sheetRes3 = await sheetData3.json()
+        var wikiListArray = sheetRes3.sheets
+        var wikiList = []
+        for (let i=0; i<wikiListArray.length; i++) {
+            wikiList.push(wikiListArray[i].properties.title)
+        }
 
-        return { wikiTitle, rawTitle, wikiBody, sheetId, clientId, wikiUrl }
+        return { wikiTitle, rawTitle, wikiBody, sheetId, clientId, wikiUrl, wikiList }
     }
 }
 </script>

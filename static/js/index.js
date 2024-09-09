@@ -21,6 +21,7 @@ var googleEmail = ''
 var expireDate = new Date()
 
 document.querySelector('#isLogin').innerHTML = '<i class="bx bx-user-x" onclick="handleAuthClick()" ></i>'
+var wikiList = eval(document.querySelector("#wikiList").innerText)
 
 if (localStorage.getItem('googleToken')) {
     googleToken = localStorage.getItem('googleToken')
@@ -42,12 +43,20 @@ if (localStorage.getItem('googleToken')) {
 
 document.querySelector('#search-button').href = document.querySelector('#wikiUrl').href
 document.querySelector('#search-input').addEventListener("input", (e) => {
-    document.querySelector('#search-button').href= document.querySelector('#wikiUrl').href+document.querySelector('#search-input').value
+    if (wikiList.include(document.querySelector('#search-input').value)) {
+        document.querySelector('#search-button').href= document.querySelector('#wikiUrl').href+document.querySelector('#search-input').value
+    } else {
+        document.querySelector('#search-button').href = document.querySelector('#wikiUrl').href + 'new/?d=' + document.querySelector('#search-input').value
+    }
 })
 
 document.querySelector('#search-input').addEventListener("keyup", (e) => {
     if (e.keyCode == 13) {
-        location.href= document.querySelector('#wikiUrl').href+document.querySelector('#search-input').value
+        if (wikiList.include(document.querySelector('#search-input').value)) {
+            document.href = document.querySelector('#wikiUrl').href + document.querySelector('#search-input').value
+        } else {
+            document.href = document.querySelector('#wikiUrl').href + 'new/?d=' + document.querySelector('#search-input').value
+        }
     }
 })
 
