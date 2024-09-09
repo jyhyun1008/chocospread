@@ -43,7 +43,7 @@ if (localStorage.getItem('googleToken')) {
 
 document.querySelector('#search-button').href = document.querySelector('#wikiUrl').href
 document.querySelector('#search-input').addEventListener("input", (e) => {
-    if (wikiList.include(document.querySelector('#search-input').value)) {
+    if (wikiList.includes(document.querySelector('#search-input').value)) {
         document.querySelector('#search-button').href= document.querySelector('#wikiUrl').href+document.querySelector('#search-input').value
     } else {
         document.querySelector('#search-button').href = document.querySelector('#wikiUrl').href + 'new/?d=' + document.querySelector('#search-input').value
@@ -52,7 +52,7 @@ document.querySelector('#search-input').addEventListener("input", (e) => {
 
 document.querySelector('#search-input').addEventListener("keyup", (e) => {
     if (e.keyCode == 13) {
-        if (wikiList.include(document.querySelector('#search-input').value)) {
+        if (wikiList.includes(document.querySelector('#search-input').value)) {
             document.href = document.querySelector('#wikiUrl').href + document.querySelector('#search-input').value
         } else {
             document.href = document.querySelector('#wikiUrl').href + 'new/?d=' + document.querySelector('#search-input').value
